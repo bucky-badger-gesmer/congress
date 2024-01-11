@@ -81,6 +81,7 @@ const Member: React.FC = () => {
                             alt="Senate Member Avatar"
                             style={{
                               maxWidth: "300px",
+                              marginBottom: "24px",
                             }}
                           ></IonImg>
                         </div>
