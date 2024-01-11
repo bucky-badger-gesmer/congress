@@ -1,14 +1,14 @@
 import { IonCol, IonContent, IonGrid, IonPage, IonRow } from "@ionic/react";
 import { HeaderWithToggle } from "../components";
 
-const Committees: React.FC = () => {
+const Member: React.FC = () => {
   return (
     <IonPage>
       <HeaderWithToggle />
       <IonContent>
         <IonGrid>
           <IonRow>
-            <IonCol>Committees</IonCol>
+            <IonCol>Member Detail</IonCol>
           </IonRow>
         </IonGrid>
       </IonContent>
@@ -16,4 +16,4 @@ const Committees: React.FC = () => {
   );
 };
 
-export default Committees;
+export default Member;

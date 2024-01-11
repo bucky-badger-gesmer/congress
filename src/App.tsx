@@ -38,7 +38,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import { BillsStatements, Committess, Members, Votes } from "./pages";
+import { BillsStatements, Committess, Member, Members, Votes } from "./pages";
 
 setupIonicReact();
 
@@ -62,6 +62,7 @@ const App: React.FC = () => (
           <Route exact path="/">
             <Redirect to="/members" />
           </Route>
+          <Route path="/member/:id" component={Member}></Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="members" href="/members">

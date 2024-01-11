@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// starts at 80, all the way to 117
 const BASE_URL = "https://api.propublica.org/congress/v1/117";
 
 const getMembers = async () => {

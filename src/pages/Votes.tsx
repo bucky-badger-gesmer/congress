@@ -1,22 +1,10 @@
-import {
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonHeader,
-  IonPage,
-  IonRow,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonCol, IonContent, IonGrid, IonPage, IonRow } from "@ionic/react";
+import { HeaderWithToggle } from "../components";
 
 const Votes: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>U.S. Congress</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <HeaderWithToggle />
       <IonContent>
         <IonGrid>
           <IonRow>
