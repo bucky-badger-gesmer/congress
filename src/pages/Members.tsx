@@ -1,11 +1,13 @@
 import {
   IonAvatar,
   IonCard,
+  IonCardHeader,
   IonCol,
   IonContent,
   IonGrid,
   IonIcon,
   IonImg,
+  IonInput,
   IonItem,
   IonLabel,
   IonList,
@@ -22,7 +24,10 @@ import { LoadingSpinner } from "../components";
 
 const Members: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [senateMembers, setSenateMembers] = useState([]);
+  const [filteredSenateMembers, setFilteredSenateMembers] = useState([]);
   const history = useHistory();
 
   useEffect(() => {
@@ -37,6 +42,23 @@ const Members: React.FC = () => {
 
   const handleItemClick = (id: number) => {
     history.push(`/member/${id}`);
+  };
+
+  const handleSearch = (event: CustomEvent) => {
+    const searchTerm = event.detail.value;
+    const filteredMembers = senateMembers.filter((senateMember: any) => {
+      return (
+        (senateMember.first_name as string)
+          .toLocaleLowerCase()
+          .includes(searchTerm) ||
+        (senateMember.last_name as string)
+          .toLocaleLowerCase()
+          .includes(searchTerm)
+      );
+    });
+
+    setSearchTerm(event.detail.value);
+    setFilteredSenateMembers(filteredMembers);
   };
 
   return (
@@ -58,14 +80,29 @@ const Members: React.FC = () => {
                   maxWidth: "750px",
                 }}
               >
+                <IonCardHeader>Congressional Members</IonCardHeader>
                 <IonList>
-                  <IonListHeader>
-                    <IonLabel>Senate Members</IonLabel>
+                  <IonListHeader
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ width: "100%" }}>
+                      <IonLabel>Senate Members</IonLabel>
+                      <IonInput
+                        placeholder="Search"
+                        clearInput={true}
+                        onIonInput={(e) => handleSearch(e)}
+                        value={searchTerm}
+                      />
+                    </div>
                   </IonListHeader>
                   {loading ? (
                     <LoadingSpinner />
                   ) : (
-                    senateMembers.map((senateMember: any, i) => (
+                    filteredSenateMembers.map((senateMember: any, i) => (
                       <IonItem
                         key={i}
                         onClick={() => handleItemClick(senateMember.id)}
