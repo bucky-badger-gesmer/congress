@@ -8,8 +8,8 @@ import {
 } from "@ionic/react";
 import { moon, sunny } from "ionicons/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
 import { toggleDarkMode } from "../redux/darkModeSlice";
+import { RootState } from "../redux/store";
 
 const HeaderWithToggle: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const HeaderWithToggle: React.FC = () => {
           <IonIcon icon={sunny} style={{ marginRight: "12px" }} />
           <IonToggle
             onIonChange={toggleDarkModeHandler}
-            justify="space-between"
+            checked={isDarkMode}
           ></IonToggle>
           <IonIcon
             icon={moon}

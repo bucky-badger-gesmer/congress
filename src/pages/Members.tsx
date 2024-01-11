@@ -16,17 +16,17 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
-import { getMembers } from "../services";
-import HeaderWithToggle from "../components/HeaderWithToggle";
-import { chevronForward, flag } from "ionicons/icons";
-import { useHistory } from "react-router";
-import { LoadingSpinner } from "../components";
-import "./Members.css";
 import { ConfigProvider, Table, theme } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { chevronForward, flag } from "ionicons/icons";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { LoadingSpinner } from "../components";
+import HeaderWithToggle from "../components/HeaderWithToggle";
 import { RootState } from "../redux/store";
+import { getMembers } from "../services";
+import "./Members.css";
 
 const Members: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ const Members: React.FC = () => {
   }, []);
 
   const handleItemClick = (id: number) => {
-    history.push(`/member/${id}`);
+    history.push(`/members/${id}`);
   };
 
   const handleSearch = (event: CustomEvent) => {
