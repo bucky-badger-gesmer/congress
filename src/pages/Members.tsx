@@ -61,6 +61,8 @@ const Members: React.FC = () => {
     setFilteredSenateMembers(filteredMembers);
   };
 
+  const list = searchTerm === "" ? senateMembers : filteredSenateMembers;
+
   return (
     <IonPage>
       <HeaderWithToggle />
@@ -102,7 +104,7 @@ const Members: React.FC = () => {
                   {loading ? (
                     <LoadingSpinner />
                   ) : (
-                    filteredSenateMembers.map((senateMember: any, i) => (
+                    list.map((senateMember: any, i) => (
                       <IonItem
                         key={i}
                         onClick={() => handleItemClick(senateMember.id)}
