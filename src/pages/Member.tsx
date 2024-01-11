@@ -90,24 +90,34 @@ const Member: React.FC = () => {
                         <IonItem>
                           <IonText slot="start">Name</IonText>
                           <IonText slot="end">
-                            {member.first_name} {member.last_name}
+                            <strong>
+                              {member.first_name} {member.last_name}
+                            </strong>
                           </IonText>
                         </IonItem>
                         <IonItem>
                           <IonText slot="start">State</IonText>
-                          <IonText slot="end">{member.roles[0].state}</IonText>
+                          <IonText slot="end">
+                            <strong>{member.roles[0].state}</strong>
+                          </IonText>
                         </IonItem>
                         <IonItem>
                           <IonText slot="start">Title</IonText>
-                          <IonText slot="end">{member.roles[0].title}</IonText>
+                          <IonText slot="end">
+                            <strong>{member.roles[0].title}</strong>
+                          </IonText>
                         </IonItem>
                         <IonItem>
                           <IonText slot="start">Current Party</IonText>
-                          <IonText slot="end">{member.current_party}</IonText>
+                          <IonText slot="end">
+                            <strong>{member.current_party}</strong>
+                          </IonText>
                         </IonItem>
                         <IonItem>
                           <IonText slot="start">Gender</IonText>
-                          <IonText slot="end">{member.gender}</IonText>
+                          <IonText slot="end">
+                            <strong>{member.gender}</strong>
+                          </IonText>
                         </IonItem>
                       </IonList>
                     </>

@@ -14,7 +14,7 @@ const HeaderWithToggle: React.FC = () => {
   return (
     <IonHeader>
       <IonToolbar>
-        <IonTitle>U.S. Congress</IonTitle>
+        <IonTitle slot="start">U.S. Congress</IonTitle>
         <IonButtons slot="end">
           <IonIcon icon={sunny} style={{ marginRight: "12px" }} />
           <IonToggle

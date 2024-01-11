@@ -21,6 +21,9 @@ import HeaderWithToggle from "../components/HeaderWithToggle";
 import { chevronForward, flag } from "ionicons/icons";
 import { useHistory } from "react-router";
 import { LoadingSpinner } from "../components";
+import "./Members.css";
+import { Space, Table, Tag } from "antd";
+import { ColumnsType } from "antd/es/table";
 
 const Members: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -47,14 +50,10 @@ const Members: React.FC = () => {
   const handleSearch = (event: CustomEvent) => {
     const searchTerm = event.detail.value;
     const filteredMembers = senateMembers.filter((senateMember: any) => {
-      return (
-        (senateMember.first_name as string)
-          .toLocaleLowerCase()
-          .includes(searchTerm) ||
-        (senateMember.last_name as string)
-          .toLocaleLowerCase()
-          .includes(searchTerm)
-      );
+      const memberName =
+        `${senateMember.first_name} ${senateMember.last_name}`.toLocaleLowerCase();
+
+      return memberName.includes(searchTerm);
     });
 
     setSearchTerm(event.detail.value);
@@ -62,6 +61,87 @@ const Members: React.FC = () => {
   };
 
   const list = searchTerm === "" ? senateMembers : filteredSenateMembers;
+
+  interface DataType {
+    key: string;
+    name: string;
+    age: number;
+    address: string;
+    tags: string[];
+  }
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Tags",
+      key: "tags",
+      dataIndex: "tags",
+      render: (_, { tags }) => (
+        <>
+          {tags.map((tag) => {
+            let color = tag.length > 5 ? "geekblue" : "green";
+            if (tag === "loser") {
+              color = "volcano";
+            }
+            return (
+              <Tag color={color} key={tag}>
+                {tag.toUpperCase()}
+              </Tag>
+            );
+          })}
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <a>Invite {record.name}</a>
+          <a>Delete</a>
+        </Space>
+      ),
+    },
+  ];
+
+  const data: DataType[] = [
+    {
+      key: "1",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      tags: ["nice", "developer"],
+    },
+    {
+      key: "2",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      tags: ["loser"],
+    },
+    {
+      key: "3",
+      name: "Joe Black",
+      age: 32,
+      address: "Sydney No. 1 Lake Park",
+      tags: ["cool", "teacher"],
+    },
+  ];
 
   return (
     <IonPage>
@@ -83,7 +163,7 @@ const Members: React.FC = () => {
                 }}
               >
                 <IonCardHeader>Congressional Members</IonCardHeader>
-                <IonList>
+                <IonList className="members-list">
                   <IonListHeader
                     style={{
                       display: "flex",
@@ -92,7 +172,6 @@ const Members: React.FC = () => {
                     }}
                   >
                     <div style={{ width: "100%" }}>
-                      <IonLabel>Senate Members</IonLabel>
                       <IonInput
                         placeholder="Search"
                         clearInput={true}
@@ -104,33 +183,47 @@ const Members: React.FC = () => {
                   {loading ? (
                     <LoadingSpinner />
                   ) : (
-                    list.map((senateMember: any, i) => (
-                      <IonItem
-                        key={i}
-                        onClick={() => handleItemClick(senateMember.id)}
-                      >
-                        <IonAvatar aria-hidden="true" slot="start">
-                          <IonImg
-                            src={`https://theunitedstates.io/images/congress/225x275/${senateMember.id}.jpg`}
-                            alt="Senate Member Avatar"
-                          ></IonImg>
-                        </IonAvatar>
-                        <IonLabel>
-                          {senateMember.first_name} {senateMember.last_name},{" "}
-                          {senateMember.state}
-                        </IonLabel>
-                        <IonIcon
-                          slot="start"
-                          color={
-                            senateMember.party === "R" ? "danger" : "primary"
-                          }
-                          icon={flag}
-                        ></IonIcon>
-                        <IonIcon slot="end" icon={chevronForward} />
-                      </IonItem>
-                    ))
+                    <>
+                      {list.map((senateMember: any, i) => {
+                        console.log("sena", senateMember);
+                        const partyColor =
+                          senateMember.party === "R"
+                            ? "danger"
+                            : senateMember.party === "D"
+                            ? "primary"
+                            : "warning";
+                        return (
+                          <IonItem
+                            key={i}
+                            onClick={() => handleItemClick(senateMember.id)}
+                          >
+                            <IonAvatar aria-hidden="true" slot="start">
+                              <IonImg
+                                src={`https://theunitedstates.io/images/congress/225x275/${senateMember.id}.jpg`}
+                                alt="Senate Member Avatar"
+                              ></IonImg>
+                            </IonAvatar>
+                            <IonLabel>
+                              {senateMember.first_name} {senateMember.last_name}
+                              , {senateMember.state}
+                            </IonLabel>
+                            <IonIcon
+                              slot="start"
+                              color={partyColor}
+                              icon={flag}
+                            ></IonIcon>
+                            <IonIcon slot="end" icon={chevronForward} />
+                          </IonItem>
+                        );
+                      })}
+                    </>
                   )}
                 </IonList>
+                <Table
+                  className="members-table"
+                  columns={columns}
+                  dataSource={data}
+                />
               </IonCard>
             </IonCol>
           </IonRow>
