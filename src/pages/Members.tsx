@@ -14,6 +14,7 @@ import {
   IonListHeader,
   IonPage,
   IonRow,
+  IonText,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { getMembers } from "../services";
@@ -77,10 +78,28 @@ const Members: React.FC = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "member",
       key: "name",
-      render: (name) => {
-        return name;
+      render: (member) => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <IonAvatar aria-hidden="true" slot="start">
+              <IonImg
+                src={`https://theunitedstates.io/images/congress/225x275/${member.id}.jpg`}
+                alt={`${member.first_name} ${member.last_name} Avatar`}
+              ></IonImg>
+            </IonAvatar>
+            <IonText>
+              {member.first_name} {member.last_name}
+            </IonText>
+          </div>
+        );
       },
     },
     {
@@ -116,6 +135,7 @@ const Members: React.FC = () => {
       state: senateMember.state,
       party: senateMember.party,
       gender: senateMember.gender,
+      member: senateMember,
     };
   });
 
