@@ -1,7 +1,5 @@
 import {
   IonAvatar,
-  IonButton,
-  IonButtons,
   IonCard,
   IonCol,
   IonContent,
@@ -18,20 +16,28 @@ import {
 import { useEffect, useState } from "react";
 import { getMembers } from "../services";
 import HeaderWithToggle from "../components/HeaderWithToggle";
-import { checkbox, chevronForward, handLeft } from "ionicons/icons";
+import { chevronForward, flag } from "ionicons/icons";
+import { useHistory } from "react-router";
+import { LoadingSpinner } from "../components";
 
 const Members: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const [senateMembers, setSenateMembers] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     const setUp = async () => {
       const members = await getMembers();
-      console.log("members", members);
       setSenateMembers(members);
+      setLoading(false);
     };
 
     setUp();
   }, []);
+
+  const handleItemClick = (id: number) => {
+    history.push(`/member/${id}`);
+  };
 
   return (
     <IonPage>
@@ -56,27 +62,35 @@ const Members: React.FC = () => {
                   <IonListHeader>
                     <IonLabel>Senate Members</IonLabel>
                   </IonListHeader>
-                  {senateMembers.map((senateMember: any, i) => (
-                    <IonItem key={i}>
-                      <IonAvatar aria-hidden="true" slot="start">
-                        <IonImg
-                          src={`https://theunitedstates.io/images/congress/225x275/${senateMember.id}.jpg`}
-                          alt="Senate Member Avatar"
-                        ></IonImg>
-                      </IonAvatar>
-                      <IonLabel>
-                        {senateMember.first_name} {senateMember.last_name}
-                      </IonLabel>
-                      <IonIcon
-                        slot="start"
-                        color={
-                          senateMember.party === "R" ? "danger" : "primary"
-                        }
-                        icon={checkbox}
-                      ></IonIcon>
-                      <IonIcon slot="end" icon={chevronForward} />
-                    </IonItem>
-                  ))}
+                  {loading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    senateMembers.map((senateMember: any, i) => (
+                      <IonItem
+                        key={i}
+                        onClick={() => handleItemClick(senateMember.id)}
+                      >
+                        <IonAvatar aria-hidden="true" slot="start">
+                          <IonImg
+                            src={`https://theunitedstates.io/images/congress/225x275/${senateMember.id}.jpg`}
+                            alt="Senate Member Avatar"
+                          ></IonImg>
+                        </IonAvatar>
+                        <IonLabel>
+                          {senateMember.first_name} {senateMember.last_name},{" "}
+                          {senateMember.state}
+                        </IonLabel>
+                        <IonIcon
+                          slot="start"
+                          color={
+                            senateMember.party === "R" ? "danger" : "primary"
+                          }
+                          icon={flag}
+                        ></IonIcon>
+                        <IonIcon slot="end" icon={chevronForward} />
+                      </IonItem>
+                    ))
+                  )}
                 </IonList>
               </IonCard>
             </IonCol>

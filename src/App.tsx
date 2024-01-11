@@ -10,15 +10,7 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import {
-  checkbox,
-  documents,
-  ellipse,
-  extensionPuzzle,
-  people,
-  square,
-  triangle,
-} from "ionicons/icons";
+import { checkbox, documents, extensionPuzzle, people } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
