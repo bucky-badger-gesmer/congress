@@ -139,7 +139,6 @@ const Members: React.FC = () => {
     };
   });
 
-  console.log("pooping..", isDarkMode);
   return (
     <IonPage>
       <HeaderWithToggle />
