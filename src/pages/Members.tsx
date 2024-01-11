@@ -22,15 +22,19 @@ import { chevronForward, flag } from "ionicons/icons";
 import { useHistory } from "react-router";
 import { LoadingSpinner } from "../components";
 import "./Members.css";
-import { Space, Table, Tag } from "antd";
+import { ConfigProvider, Table, theme } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const Members: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [senateMembers, setSenateMembers] = useState([]);
   const [filteredSenateMembers, setFilteredSenateMembers] = useState([]);
+  const isDarkMode = useSelector(
+    (state: RootState) => state.darkMode.isDarkMode
+  );
   const history = useHistory();
 
   useEffect(() => {
@@ -65,9 +69,9 @@ const Members: React.FC = () => {
   interface DataType {
     key: string;
     name: string;
-    age: number;
-    address: string;
-    tags: string[];
+    state: string;
+    party: string;
+    gender: string;
   }
 
   const columns: ColumnsType<DataType> = [
@@ -75,74 +79,47 @@ const Members: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (text) => <a>{text}</a>,
+      render: (name) => {
+        return name;
+      },
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "State",
+      dataIndex: "state",
+      key: "state",
+      render: (state) => {
+        return state;
+      },
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Party",
+      dataIndex: "party",
+      key: "party",
+      render: (party) => {
+        return party;
+      },
     },
     {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <a>Invite {record.name}</a>
-          <a>Delete</a>
-        </Space>
-      ),
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      render: (gender) => {
+        return gender;
+      },
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
+  const data: DataType[] = senateMembers.map((senateMember: any) => {
+    return {
+      key: senateMember.id,
+      name: `${senateMember.first_name} ${senateMember.last_name}`,
+      state: senateMember.state,
+      party: senateMember.party,
+      gender: senateMember.gender,
+    };
+  });
 
+  console.log("pooping..", isDarkMode);
   return (
     <IonPage>
       <HeaderWithToggle />
@@ -185,7 +162,6 @@ const Members: React.FC = () => {
                   ) : (
                     <>
                       {list.map((senateMember: any, i) => {
-                        console.log("sena", senateMember);
                         const partyColor =
                           senateMember.party === "R"
                             ? "danger"
@@ -200,7 +176,7 @@ const Members: React.FC = () => {
                             <IonAvatar aria-hidden="true" slot="start">
                               <IonImg
                                 src={`https://theunitedstates.io/images/congress/225x275/${senateMember.id}.jpg`}
-                                alt="Senate Member Avatar"
+                                alt={`${senateMember.first_name} ${senateMember.last_name} Avatar`}
                               ></IonImg>
                             </IonAvatar>
                             <IonLabel>
@@ -219,11 +195,19 @@ const Members: React.FC = () => {
                     </>
                   )}
                 </IonList>
-                <Table
-                  className="members-table"
-                  columns={columns}
-                  dataSource={data}
-                />
+                <ConfigProvider
+                  theme={{
+                    algorithm: isDarkMode
+                      ? theme.darkAlgorithm
+                      : theme.defaultAlgorithm,
+                  }}
+                >
+                  <Table
+                    className="members-table"
+                    columns={columns}
+                    dataSource={data}
+                  />
+                </ConfigProvider>
               </IonCard>
             </IonCol>
           </IonRow>

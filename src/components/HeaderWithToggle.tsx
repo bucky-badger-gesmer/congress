@@ -7,9 +7,20 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { moon, sunny } from "ionicons/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { toggleDarkMode } from "../redux/darkModeSlice";
 
 const HeaderWithToggle: React.FC = () => {
-  const toggleDarkModeHandler = () => document.body.classList.toggle("dark");
+  const dispatch = useDispatch();
+  const isDarkMode = useSelector(
+    (state: RootState) => state.darkMode.isDarkMode
+  );
+
+  const toggleDarkModeHandler = () => {
+    dispatch(toggleDarkMode());
+    document.body.classList.toggle("dark");
+  };
 
   return (
     <IonHeader>
