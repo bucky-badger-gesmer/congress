@@ -199,8 +199,10 @@ const Members: React.FC = () => {
                               ></IonImg>
                             </IonAvatar>
                             <IonLabel>
-                              {senateMember.first_name} {senateMember.last_name}
-                              , {senateMember.state}
+                              <strong>
+                                {senateMember.first_name}{" "}
+                                {senateMember.last_name}, {senateMember.state}
+                              </strong>
                             </IonLabel>
                             <IonIcon
                               slot="start"
