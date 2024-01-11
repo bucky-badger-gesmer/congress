@@ -23,7 +23,6 @@ import { moon, settings, sunny } from "ionicons/icons";
 
 const Members: React.FC = () => {
   const [senateMembers, setSenateMembers] = useState([]);
-  const [themeToggle, setThemeToggle] = useState(false);
   const toggleDarkModeHandler = () => document.body.classList.toggle("dark");
 
   useEffect(() => {
@@ -42,13 +41,12 @@ const Members: React.FC = () => {
         <IonToolbar>
           <IonTitle>U.S. Congress</IonTitle>
           <IonButtons slot="end">
-            <IonIcon icon={sunny} />
+            <IonIcon icon={sunny} style={{ marginRight: "12px" }} />
             <IonToggle
-              checked={themeToggle}
               onIonChange={toggleDarkModeHandler}
               justify="space-between"
             ></IonToggle>
-            <IonIcon icon={moon} />
+            <IonIcon icon={moon} style={{ marginLeft: "12px" }} />
           </IonButtons>
         </IonToolbar>
       </IonHeader>
